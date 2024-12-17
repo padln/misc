@@ -1,0 +1,88 @@
+\documentclass[a4paper]{article} 
+\input{head}
+\begin{document}
+
+%-------------------------------
+%	TITLE SECTION
+%-------------------------------
+
+\fancyhead[C]{}
+\hrule \medskip % Upper rule
+\begin{minipage}{0.295\textwidth} 
+\raggedright
+\footnotesize
+Nathan Madsen\hfill\\   
+PERM: 5679642\hfill\\
+madsen@ucsb.edu
+\end{minipage}
+\begin{minipage}{0.4\textwidth} 
+\centering 
+\large 
+HW Set 6\\ 
+\normalsize 
+MATH CS 121\\ 
+\end{minipage}
+\begin{minipage}{0.295\textwidth} 
+\raggedleft
+\today\hfill\\
+\end{minipage}
+\medskip\hrule 
+\bigskip
+
+%-------------------------------
+%	CONTENTS
+%-------------------------------
+
+\section*{Problem 3}
+We are given a normal random-variable $X$ with mean $\mu = 0$ and variance $\sigma^2 > 0$. We are also told that $S = \max(X,0)$ models the stock price in a year from today. First we want to find the cumulative distribution function $F_S$ and compute $E(S)$. 
+\\ \\
+Say $s<0$ then $F_S(s) = P(S \leq s) = 0$. Say $s \geq 0$ then $F_S(s) = P(\max(X,0) \leq s) = P(X \leq 0)$. And since the mean is $0$ we get $F_S(s) = \Phi (s/\sigma)$
+\\ \\
+Next we want to compute the expected value $E[S]$
+\[ E[S] = E[\max(X,0)] = \int_0^\infty sf_X(s)ds \]
+where $f_X(s)$ is the PDF of $X$ given by 
+\[ f_X(s) = \frac{1}{\sqrt{2\pi \sigma^2}}e^{-\frac{s^2}{2\sigma^2}}\]
+
+Next we want to determine if $S$ has a PDF. Since we know the CDF $F_S(s)$ is differentiable then the PDF is given by
+\[ f_S(s) = \frac{d}{ds}F_S(s) = f_X(s)\]
+Lastly, to calculate the probability that the stock price increases from a dollar
+\[ P(S>1) = 1 - P(S\leq 1) = 1- \phi(1/\sigma) \]
+
+
+\section*{Problem 4}
+Starting with the PDF of $X,Y$ , since $\mu = 0$ we have
+\[ f_{X,Y}(x,y) = \frac{1}{2\pi \sigma^2}\exp \left( -\frac{x^2+y^2}{2\sigma^2} \right) \]
+ We are given the transformation from cartesian to polar that $x = r\cos\theta$ and $y=r\sin\theta$ and $r^2 = x^2 + y^2$. So the PDF becomes
+ \[ f_{X,Y}(r\cos\theta,r\sin\theta) = \frac{1}{2\pi \sigma^2}\exp \left( -\frac{r^2}{2\sigma^2} \right)\]
+ Using the Jacobian $dxdy=rdrd\theta$ we get
+ \[ f_{R,\Theta}(r,\theta) = f_{X,Y}(x,y)\cdot |J|=\frac{1}{2\pi \sigma^2}\exp \left( -\frac{r^2}{2\sigma^2} \right) \cdot r \]
+ or factored into
+ \[ f_{R,\Theta}(r, \theta) = \underbrace{\left(\frac{r}{\sigma^2} \exp\left(-\frac{r^2}{2\sigma^2}\right)\right)}_{f_R(r)} \cdot \underbrace{\left(\frac{1}{2\pi}\right)}_{f_\Theta(\theta)} \]
+And since the PDF has factored into a product of $f_R(r)$ and $f_\Theta(\theta)$ we know that $R$ and $\Theta$ are independent. 
+\\ \\
+Now we want to use the PDFs to find the CDFs. We know 
+\[ F_R(r) = \int_0^r f_R(t)dt = 1-\exp\left( -\frac{r^2}{2\sigma^2}\right)\]
+and likewise
+\[ F_\Theta(\theta) = \int_0^{\theta}f_\Theta(t)dt = \frac{\theta}{2\pi}\]
+
+\section*{Problem 5}
+We are given a sequence of integers $Z_1, Z_2, \dots, Z_n$ such that $Z_l \in \mathbb{Z}$ and we are told the $Z_l$ are independent and $P(Z_l = z)$ is the same for all $l \in \mathbb{N}$. We are then given a variable $D_n$ that counts the number of distinct integers. We are tasked with showing $P(\lim_{n \to \infty} D_n/n = 0)=1$. 
+\\ \\
+Taking the hint we know that 
+\[ D_n \leq 2M + \sum_{l=1}^n 1_{\{|Z_l| \geq M\} } \]
+And we defined
+\[ A_n = \{ D_n > \epsilon n \} \]
+By the Markov inequality we know
+\[ P(A_n) = P( D_n > \epsilon n ) \leq \frac{E[D_n]}{\epsilon n}\]
+We want to use the Borel-Centelli lemma so we first need to show that $E[D_n] < \infty$. Going back to our first hint
+\[ E[D_n] \leq 2M + \sum_{l-1}^n P(|Z_l| \geq M) \]
+And since the $Z_l$ are identically distributed we can say 
+\[ E[D_n] \leq 2M + n P(|Z_1| \geq M) \]
+And clearly by arbitrarily large choice of $M$ we can make this probability as small as we would like. Together with our earlier work we see
+\[ P(D_n > \epsilon n) \leq \frac{2M}{\epsilon n}+\frac{P(|Z_1| \geq M)}{\epsilon}\]
+So sufficiently large $n$ makes the first term small and large $M$ makers the second term small. So we get
+\[ \sum_{n=1}^\infty P(D_n > \epsilon n) \leq \infty \]
+So by Borel-Cantelli $P(D_n > \epsilon n \text{ i.o.})=0$ and so $P(\lim_{n \to \infty} D_n/n = 0)=1$.
+
+
+\end{document}
